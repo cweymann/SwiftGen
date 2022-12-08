@@ -9,48 +9,24 @@
 import TestUtils
 import XCTest
 
-final class InterfaceBuilderiOSTests: XCTestCase {
+final class UPnPTests: XCTestCase {
   func testEmpty() throws {
-    let parser = try InterfaceBuilder.Parser()
+    let parser = try UPnP.Parser()
 
     let result = parser.stencilContext()
-    XCTDiffContexts(result, expected: "empty", sub: .interfaceBuilderiOS)
+    XCTDiffContexts(result, expected: "empty", sub: .upnp)
   }
 
-  func testMessageStoryboard() throws {
-    let parser = try InterfaceBuilder.Parser()
+  func testAllServices() throws {
+    let parser = try UPnP.Parser()
     do {
-      try parser.searchAndParse(path: Fixtures.resource(for: "Message.storyboard", sub: .interfaceBuilderiOS))
+      try parser.searchAndParse(path: Fixtures.resourceDirectory(sub: .upnp))
     } catch {
       print("Error: \(error.localizedDescription)")
     }
 
     let result = parser.stencilContext()
-    XCTDiffContexts(result, expected: "messages", sub: .interfaceBuilderiOS)
-  }
-
-  func testAnonymousStoryboard() throws {
-    let parser = try InterfaceBuilder.Parser()
-    do {
-      try parser.searchAndParse(path: Fixtures.resource(for: "Anonymous.storyboard", sub: .interfaceBuilderiOS))
-    } catch {
-      print("Error: \(error.localizedDescription)")
-    }
-
-    let result = parser.stencilContext()
-    XCTDiffContexts(result, expected: "anonymous", sub: .interfaceBuilderiOS)
-  }
-
-  func testAllStoryboards() throws {
-    let parser = try InterfaceBuilder.Parser()
-    do {
-      try parser.searchAndParse(path: Fixtures.resourceDirectory(sub: .interfaceBuilderiOS))
-    } catch {
-      print("Error: \(error.localizedDescription)")
-    }
-
-    let result = parser.stencilContext()
-    XCTDiffContexts(result, expected: "all", sub: .interfaceBuilderiOS)
+    XCTDiffContexts(result, expected: "all", sub: .upnp)
   }
 
   // ensure we still have a test case for checking support of module placeholders
