@@ -8,28 +8,33 @@ import Foundation
 import Kanna
 
 extension UPnP {
-  struct State {
-    let name: String
-    let dataType: String
-    let dataValue: String
-  }
+	struct State {
+		let name: String
+		let dataType: DataType
+		let defaultValue: String?
+	}
 }
 
 // MARK: - XML
 
 private enum XML {
-  static let customClassAttribute = "customClass"
-  static let customModuleAttribute = "customModule"
-  static let customModuleProviderAttribute = "customModuleProvider"
-  static let storyboardIdentifierAttribute = "storyboardIdentifier"
-  static let targetValue = "target"
+	static let nameXPath = "//u:name"
+	static let dataTypeXPath = "//u:dataType"
+	static let defaultValueXPath = "//u:defaultValue"
 }
 
 extension UPnP.State {
+	enum DataType: String {
+		case unknown
+		case string
+		case ui4
+		case ui2
+	}
 	init(with object: Kanna.XMLElement) {
-		name = object.tagName ?? ""
-		dataType = object[XML.customClassAttribute] ?? ""
-		dataValue = object[XML.customModuleAttribute] ?? ""
+		name = object.xpath(XML.nameXPath, namespaces: UPnP.namespaces).first?.content ?? ""
+		let rawDataType = object.xpath(XML.dataTypeXPath, namespaces: UPnP.namespaces).first?.content ?? "unknown"
+		dataType = DataType(rawValue: rawDataType) ?? .unknown
+		defaultValue = object.xpath(XML.defaultValueXPath, namespaces: UPnP.namespaces).first?.content
 	}
 }
 
@@ -37,3 +42,4 @@ extension UPnP.State {
 
 extension UPnP.State: Equatable {}
 extension UPnP.State: Hashable {}
+

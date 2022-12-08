@@ -38,7 +38,7 @@ extension UPnP.Service {
 
 		// States
 		states = Set<UPnP.State>(
-			document.xpath(XML.stateXPath).map { element in
+			document.xpath(XML.stateXPath, namespaces: UPnP.namespaces).map { element in
 				UPnP.State(with: element)
 			}
 		)

@@ -161,3 +161,12 @@ extension Yaml.Parser: ParserWithInfo {
     pathDescription: "YAML files (or directories that contain them) to parse."
   )
 }
+
+extension UPnP.Parser: ParserWithInfo {
+	public static let info = ParserCLI(
+		parserType: UPnP.Parser.self,
+		name: "upnp",
+		description: "Generate code for custom UPnP description xml.",
+		pathDescription: "UPnP files (or directories that contain them) to parse."
+	)
+}

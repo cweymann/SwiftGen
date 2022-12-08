@@ -26,6 +26,7 @@ extension Commands {
         ParserCommand<Strings.Parser>.self,
         ParserCommand<AssetsCatalog.Parser>.self,
         ParserCommand<Yaml.Parser>.self,
+		ParserCommand<UPnP.Parser>.self,
 
         // deprecated
         DeprecatedCommands.Storyboards.self

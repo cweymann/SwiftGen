@@ -131,6 +131,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--help"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "run upnp --templateName swift5 $(PROJECT_DIR)/Sources/TestUtils/Fixtures/Resources/upnp"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -222,6 +226,13 @@
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "GENERATE_CONTEXTS"
+            value = "YES"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

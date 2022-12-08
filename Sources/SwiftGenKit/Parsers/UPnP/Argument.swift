@@ -9,7 +9,7 @@ import Kanna
 
 extension UPnP {
 	struct Argument {
-		enum Direction {
+		enum Direction: String {
 			case `in`
 			case out
 		}
