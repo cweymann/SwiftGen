@@ -9,9 +9,14 @@ import Kanna
 
 extension UPnP {
 	struct Service {
+		let namespace: String
 		let name: String
 		let actions: Set<Action>
 		let states: Set<State>
+
+		func namespaces() -> [String: String] {
+			return ["u":namespace]
+		}
 	}
 }
 
@@ -28,6 +33,9 @@ extension UPnP.Service {
 	init(with document: Kanna.XMLDocument, name: String) throws {
 		self.name = name
 
+		self.namespace = UPnP.rootNamespace(from: document) ?? ""
+
+
 		// Actions
 		actions = Set<UPnP.Action>(
 			document.xpath(XML.actionXPath, namespaces: UPnP.namespaces).compactMap { element in
@@ -43,5 +51,9 @@ extension UPnP.Service {
 			}
 		)
 	}
+}
+
+extension UPnP.Service: Hashable {
+	
 }
 

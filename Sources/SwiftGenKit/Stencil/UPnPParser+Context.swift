@@ -17,7 +17,7 @@ extension UPnP.Parser {
 
 	private func map(service: UPnP.Service) -> [String: Any] {
 		var result: [String: Any] = [
-			"name": service.name,
+			"name": mappedServiceName(service: service),
 			"actions": service.actions
 				.sorted { $0.name < $1.name }
 				.map(map(action:)),
@@ -26,6 +26,19 @@ extension UPnP.Parser {
 				.map(map(state:))
 		]
 		return result
+	}
+
+	private func mappedServiceName(service: UPnP.Service) -> String {
+		let mappedName: String?
+		switch service.name {
+		case "deviceinfoSCPD":
+			mappedName = "deviceInfo"
+		case "deviceconfigSCPD":
+			mappedName = "deviceConfig"
+		default:
+			mappedName = nil
+		}
+		return mappedName ?? service.name
 	}
 
 	private func map(action: UPnP.Action) -> [String: Any] {

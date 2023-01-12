@@ -10,6 +10,14 @@ import PathKit
 
 public enum UPnP {
 	public static let namespaces = ["u":"urn:dslforum-org:service-1-0"]
+	public static func rootNamespace(from document:Kanna.XMLDocument) -> String? {
+		let element = document.xpath("namespace-uri(/*)")
+		if case let Kanna.XPathObject.String(text) = element {
+			return text
+		} else {
+			return nil
+		}
+	}
 	public enum ParserError: Error, CustomStringConvertible {
 		case invalidFile(path: Path, reason: String)
 		case unsupportedTargetRuntime(target: String)
@@ -28,6 +36,7 @@ public enum UPnP {
 
 		private let options: ParserOptionValues
 		var services = [Service]()
+		var device: Device? = nil
 		public var warningHandler: Parser.MessageHandler?
 
 		public init(options: [String: Any] = [:], warningHandler: Parser.MessageHandler? = nil) throws {
@@ -38,9 +47,22 @@ public enum UPnP {
 		public static let defaultFilter = filterRegex(forExtensions: ["xml"])
 
 		public func parse(path: Path, relativeTo parent: Path) throws {
-			try addService(at: path)
+			if(path.lastComponent == "tr064desc.xml") {
+				try addDevice(at: path)
+			} else {
+				try addService(at: path)
+			}
 		}
 
+		func addDevice(at path: Path) throws {
+			do {
+				let document = try Kanna.XML(xml: path.read(), encoding: .utf8)
+				let device = try Device(with: document)
+				self.device = device
+			} catch let error {
+				throw ParserError.invalidFile(path: path, reason: "XML parser error: \(error).")
+			}
+		}
 		func addService(at path: Path) throws {
 			do {
 				let document = try Kanna.XML(xml: path.read(), encoding: .utf8)

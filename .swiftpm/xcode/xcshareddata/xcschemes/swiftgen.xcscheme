@@ -134,7 +134,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "run upnp --templateName swift5 $(PROJECT_DIR)/Sources/TestUtils/Fixtures/Resources/upnp"
+            argument = "run upnp --templateName swift5 /Users/cweymann/Lab/SwiftGen_Source/Eve/SwiftGen/Sources/TestUtils/Fixtures/Resources/UPnP"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -194,7 +194,7 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "run ib --templateName scenes-swift5 $(PROJECT_DIR)/Sources/TestUtils/Fixtures/Resources/IB-iOS"
+            argument = "run ib --templateName scenes-swift5 /Users/cweymann/Lab/SwiftGen_Source/Eve/SwiftGen/Sources/TestUtils/Fixtures/Resources/IB-iOS"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
@@ -227,6 +227,11 @@
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "PROJECT_DIR"
+            value = "/Users/cweymann/Lab/SwiftGen_Source/Eve/SwiftGen"
+            isEnabled = "YES">
+         </EnvironmentVariable>
          <EnvironmentVariable
             key = "GENERATE_CONTEXTS"
             value = "YES"
