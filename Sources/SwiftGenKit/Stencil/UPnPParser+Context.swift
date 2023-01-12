@@ -7,16 +7,35 @@
 import Foundation
 extension UPnP.Parser {
 	public func stencilContext() -> [String: Any] {
+		let device = self.device
 		let services = self.services
 			.sorted { lhs, rhs in lhs.name < rhs.name }
 			.map(map(service:))
 		return [
+			"device": device.map(map(device:)) ?? "",
 			"services": services
 		]
 	}
-
+	private func map(device: UPnP.Device) -> [String: Any] {
+		let result: [String: Any] = [
+			"friendlyName": device.friendlyName,
+			"services": device.services
+				.sorted { $0.serviceId < $1.serviceId }
+				.map(map(serviceStub:)),
+			"childDevices": device.childDevices
+				.sorted{ $0.friendlyName < $1.friendlyName }
+				.map(map(device:))
+		]
+		return result
+	}
+	private func map(serviceStub: UPnP.ServicePlaceholder) -> [String: Any] {
+		let result: [String: Any] = [
+			"scpdURL": serviceStub.scpdURL
+		]
+		return result
+	}
 	private func map(service: UPnP.Service) -> [String: Any] {
-		var result: [String: Any] = [
+		let result: [String: Any] = [
 			"name": mappedServiceName(service: service),
 			"actions": service.actions
 				.sorted { $0.name < $1.name }
@@ -42,7 +61,7 @@ extension UPnP.Parser {
 	}
 
 	private func map(action: UPnP.Action) -> [String: Any] {
-		var result: [String: Any] = [
+		let result: [String: Any] = [
 			"name": action.name,
 			"arguments": action.arguments
 				.sorted { $0.name < $1.name }
@@ -52,7 +71,7 @@ extension UPnP.Parser {
 	}
 
 	private func map(argument: UPnP.Argument) -> [String: Any] {
-		var result: [String: Any] = [
+		let result: [String: Any] = [
 			"name": argument.name,
 			"direction": argument.direction.rawValue,
 			"relatedStateName": argument.relatedStateName
